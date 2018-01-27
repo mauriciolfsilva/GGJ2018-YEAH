@@ -9,7 +9,26 @@ public class PlayerController : MonoBehaviour {
     private float speed_x;
     [SerializeField]
     private float speed_y;
+    private bool returning;
+    private bool canHide;
 
+    void ReturnSize()
+    {
+        if (this.gameObject.transform.localScale.x < 10)
+        {
+            this.gameObject.transform.position -= new Vector3(0, (speed_y / 2)*Time.deltaTime*20, 0);
+            this.gameObject.transform.localScale += new Vector3(speed_y * Time.deltaTime*20, speed_y * Time.deltaTime*20, 0);
+        }
+
+        else
+        {
+            this.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            canHide = false;
+            returning = false;
+            this.gameObject.transform.localScale = new Vector3(10, 10, 1);
+            this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, -2, this.gameObject.transform.position.z);
+        }
+    }
 
     void Move ()
     {
@@ -20,31 +39,25 @@ public class PlayerController : MonoBehaviour {
 
         #region MoveBackground
 
-        if(Input.GetKey(KeyCode.S))
+        if (canHide)
         {
-            if (this.gameObject.transform.localScale.x < 10)
+            if (Input.GetKeyUp(KeyCode.W))
             {
-                this.gameObject.transform.position -= new Vector3(0, speed_y / 2, 0);
-                this.gameObject.transform.localScale += new Vector3(speed_y, speed_y, 0);
+                returning = true;
             }
 
-            else
+            if (Input.GetKey(KeyCode.W))
             {
-                this.gameObject.transform.localScale = new Vector3(10, 10, 1);
-                this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, -2, this.gameObject.transform.position.z);
-            }
-        }
+                this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                if (this.gameObject.transform.localScale.x > 9)
+                {
+                    this.gameObject.transform.position += new Vector3(0, speed_y / 2, 0);
+                    this.gameObject.transform.localScale -= new Vector3(speed_y, speed_y, 0);
+                }
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            if (this.gameObject.transform.localScale.x > 8)
-            {
-                this.gameObject.transform.position += new Vector3(0, speed_y / 2, 0);
-                this.gameObject.transform.localScale -= new Vector3(speed_y, speed_y, 0);
+                else
+                    this.gameObject.transform.localScale = new Vector3(9, 9, 1);
             }
-
-            else
-                this.gameObject.transform.localScale = new Vector3(8, 8, 1);
         }
 
         #endregion
@@ -52,10 +65,29 @@ public class PlayerController : MonoBehaviour {
 
     void Start ()
     {
+        
 	}
-	
-	void Update ()
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Move();
+        if (collision.CompareTag("Covert"))
+        {
+            canHide = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!Input.GetKey(KeyCode.W))
+        {
+            if (collision.CompareTag("Covert")) canHide = false;
+        }
+    }
+
+
+    void Update ()
+    {
+        if (!returning) Move();
+        if (returning) ReturnSize();
 	}
 }

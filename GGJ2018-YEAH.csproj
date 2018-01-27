@@ -284,6 +284,7 @@
   <ItemGroup>
     <Compile Include="Assets\Resouces\Scripts\Alert.cs" />
     <Compile Include="Assets\Resouces\Scripts\AlertGuard.cs" />
+    <Compile Include="Assets\Resouces\Scripts\Buttons.cs" />
     <Compile Include="Assets\Resouces\Scripts\EnemyBehavior.cs" />
     <Compile Include="Assets\Resouces\Scripts\EnemyCamera.cs" />
     <Compile Include="Assets\Resouces\Scripts\MainController.cs" />
