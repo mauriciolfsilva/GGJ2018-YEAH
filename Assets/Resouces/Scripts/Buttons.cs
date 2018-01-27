@@ -20,6 +20,9 @@ public class Buttons : MonoBehaviour {
             case "Creditos":
                 SceneManager.LoadScene(1);
                 break;
+            case "Quit":
+                Application.Quit();
+                break;
             default:
                 SceneManager.LoadScene(0);
                 break;

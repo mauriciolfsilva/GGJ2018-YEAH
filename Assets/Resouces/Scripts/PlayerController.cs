@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour {
 
         else
         {
+            this.gameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
             this.gameObject.GetComponent<BoxCollider2D>().enabled = true;
             canHide = false;
             returning = false;
@@ -33,8 +34,8 @@ public class PlayerController : MonoBehaviour {
     void Move ()
     {
         #region MoveHorizontal
-        if (Input.GetKey(KeyCode.A)) this.gameObject.transform.position -= new Vector3(speed_x, 0, 0);
-        if (Input.GetKey(KeyCode.D)) this.gameObject.transform.position += new Vector3(speed_x, 0, 0);
+        if (Input.GetKey(KeyCode.A) && this.gameObject.transform.position.x > -8.2f) this.gameObject.transform.position -= new Vector3(speed_x, 0, 0);
+        if (Input.GetKey(KeyCode.D) && this.gameObject.transform.position.x < 8.2f) this.gameObject.transform.position += new Vector3(speed_x, 0, 0);
         #endregion
 
         #region MoveBackground
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour {
 
             if (Input.GetKey(KeyCode.W))
             {
+                this.gameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
                 this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
                 if (this.gameObject.transform.localScale.x > 9)
                 {
